@@ -1,5 +1,7 @@
 import {FC, useEffect, useRef, useState} from "react";
 import { Torrent, torrentsService, addTorrentMagnet, deleteTorrent, startTorrent, pauseTorrent, addTorrentFile } from "../services/torrentsService.ts";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Torrents: FC = () => {
   const [torrents, setTorrents] = useState<Torrent[]>([]);
@@ -73,6 +75,17 @@ const Torrents: FC = () => {
     selBox.select();
     document.execCommand("copy");
     document.body.removeChild(selBox);
+
+    toast.success('URL copied to clipboard!', {
+      position: "bottom-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
 
   return (
@@ -190,6 +203,7 @@ const Torrents: FC = () => {
           ))}
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };
