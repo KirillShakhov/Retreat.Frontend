@@ -1,5 +1,5 @@
 import {FC, useEffect, useRef, useState} from "react";
-import { Torrent, torrentsService, addTorrentMagnet, deleteTorrent, startTorrent, pauseTorrent, addTorrentFile } from "../services/torrentsService.ts";
+import { Torrent, torrentsService, addTorrentMagnet, deleteTorrent, addTorrentFile } from "../services/torrentsService.ts";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -50,17 +50,23 @@ const Torrents: FC = () => {
   };
 
   const handleDownloadTorrent = (id: string) => {
-    // Implement the download functionality if needed
-    console.log(id)
+    const url = `http://localhost:8000/stream?id=${id}`;
+    const link = document.createElement('a');
+    link.setAttribute('download', url);
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
-  const handleStartPauseTorrent = (id: string, isPaused: boolean) => {
-    if (isPaused) {
-      startTorrent(id).then(() => fetchTorrents());
-    } else {
-      pauseTorrent(id).then(() => fetchTorrents());
-    }
-  };
+  // const handleStartPauseTorrent = (id: string, isPaused: boolean) => {
+  //   if (isPaused) {
+  //     startTorrent(id).then(() => fetchTorrents());
+  //   } else {
+  //     pauseTorrent(id).then(() => fetchTorrents());
+  //   }
+  // };
 
   const copy = (value: string) => {
     const url = `http://localhost:8000/stream?id=${value}`;
@@ -120,11 +126,9 @@ const Torrents: FC = () => {
                 color: "#fff"
               }}
             >
-              <div>Id: {torrent.id}</div>
               <div>Name: {torrent.name}</div>
-              <div>Download: {torrent.download}</div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <span>Progress: {torrent.progress}%</span>
+              <div style={{display: "flex", alignItems: "center", gap: 10}}>
+                <span>Progress:</span>
                 <div
                   style={{
                     background: "#555",
@@ -141,8 +145,9 @@ const Torrents: FC = () => {
                       height: "10px",
                       borderRadius: "4px"
                     }}
-                  ></div>
+                  />
                 </div>
+                <span>{torrent.progress}%</span>
               </div>
               <div>Time: {new Date(torrent.time).toLocaleString()}</div>
               <div style={{ marginTop: "10px", display: "flex", gap: "10px" }}>
@@ -172,19 +177,19 @@ const Torrents: FC = () => {
                 >
                   Download
                 </button>
-                <button
-                  onClick={() => handleStartPauseTorrent(torrent.id, !torrent.download)}
-                  style={{
-                    backgroundColor: "#1a1a1a",
-                    color: "#fff",
-                    border: "none",
-                    padding: "5px 10px",
-                    borderRadius: "4px",
-                    cursor: "pointer"
-                  }}
-                >
-                  {torrent.download ? "Pause" : "Start"}
-                </button>
+                {/*<button*/}
+                {/*  onClick={() => handleStartPauseTorrent(torrent.id, !torrent.download)}*/}
+                {/*  style={{*/}
+                {/*    backgroundColor: "#1a1a1a",*/}
+                {/*    color: "#fff",*/}
+                {/*    border: "none",*/}
+                {/*    padding: "5px 10px",*/}
+                {/*    borderRadius: "4px",*/}
+                {/*    cursor: "pointer"*/}
+                {/*  }}*/}
+                {/*>*/}
+                {/*  {torrent.download ? "Pause" : "Start"}*/}
+                {/*</button>*/}
                 <button
                   onClick={() => handleDeleteTorrent(torrent.id)}
                   style={{
