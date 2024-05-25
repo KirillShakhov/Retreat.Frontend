@@ -2,6 +2,7 @@ import {FC, useEffect, useRef, useState} from "react";
 import { Torrent, torrentsService, addTorrentMagnet, deleteTorrent, addTorrentFile } from "../services/torrentsService.ts";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {API_URL} from "../services/url.ts";
 
 const Torrents: FC = () => {
   const [torrents, setTorrents] = useState<Torrent[]>([]);
@@ -50,7 +51,7 @@ const Torrents: FC = () => {
   };
 
   const handleDownloadTorrent = (id: string) => {
-    const url = `http://localhost:8000/stream?id=${id}`;
+    const url = `${API_URL}/stream?id=${id}`;
     const link = document.createElement('a');
     link.setAttribute('download', url);
     link.href = url;
@@ -69,7 +70,7 @@ const Torrents: FC = () => {
   // };
 
   const copy = (value: string) => {
-    const url = `http://localhost:8000/stream?id=${value}`;
+    const url = `${API_URL}/stream?id=${value}`;
     const selBox = document.createElement("textarea");
     selBox.style.position = "fixed";
     selBox.style.left = "0";
