@@ -96,7 +96,8 @@ const Torrents: FC = () => {
 				flexDirection: 'column',
 				gap: 20,
 				padding: '1rem',
-				paddingBottom: 100
+				paddingBottom: 100,
+				boxSizing: 'border-box',
 			}}>
 				<h1>Torrents</h1>
 				<ControlPanel addMagnet={addMagnet} addFile={addFile}/>

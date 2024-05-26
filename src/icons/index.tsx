@@ -4,6 +4,7 @@ import Trash  from "./svg/trash.svg";
 import Copy  from "./svg/copy.svg";
 import Download  from "./svg/download.svg";
 import Tv  from "./svg/tv.svg";
+import Cross  from "./svg/cross.svg";
 
 export const IconPack  = {
     Magnet,
@@ -11,5 +12,6 @@ export const IconPack  = {
     Trash,
     Copy,
     Download,
-    Tv
+    Tv,
+    Cross
 };

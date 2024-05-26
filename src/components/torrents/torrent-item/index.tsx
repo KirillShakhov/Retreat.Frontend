@@ -16,11 +16,11 @@ interface TorrentItemProps {
 }
 
 const TorrentItem: FC<TorrentItemProps> = ({
-                                           item,
-                                           onCopy,
-                                           onDelete,
-                                           onWatch,
-                                           onDownload
+	                                           item,
+	                                           onCopy,
+	                                           onDelete,
+	                                           onWatch,
+	                                           onDownload
                                            }) => {
 
 	const palette = usePalette();
@@ -37,46 +37,44 @@ const TorrentItem: FC<TorrentItemProps> = ({
 				gap: 10,
 			}}
 		>
-			<div style={{display: 'flex', justifyContent: 'space-between'}}>
-				<h3>Name: {item.name}</h3>
-				<div style={{display: "flex", gap: "10px"}}>
-					<IconButton
-						Icon={IconPack.Tv}
-						fill={'none'}
-						stroke={'#fff'}
-						onClick={() => {
-							if (onWatch) onWatch(item)
-						}}
-						style={{backgroundColor: "#1a1a1a", width: 40, height: 40, padding: 5}}
-					/>
-					<IconButton
-						Icon={IconPack.Copy}
-						fill={'#fff'}
-						onClick={() => {
-							if (onCopy) onCopy(item)
-						}}
-						style={{backgroundColor: "#1a1a1a", width: 40, height: 40, padding: 5}}
-					/>
-					<IconButton
-						Icon={IconPack.Download}
-						fill={'none'}
-						stroke={'#fff'}
-						onClick={() => {
-							if (onDownload) onDownload(item)
-						}}
-						style={{backgroundColor: "#1a1a1a", width: 40, height: 40, padding: 5}}
-					/>
-					<IconButton
-						Icon={IconPack.Trash}
-						fill={'#fff'}
-						stroke={'#fff'}
-						onClick={() => {
-							if (onDelete) onDelete(item)
-						}}
-						style={{backgroundColor: "#b71c1c", width: 40, height: 40, padding: 5}}
-					/>
-				</div>
+			<div style={{display: "flex", justifyContent: 'end', gap: "10px"}}>
+				<IconButton
+					Icon={IconPack.Tv}
+					fill={'none'}
+					stroke={'#fff'}
+					onClick={() => {
+						if (onWatch) onWatch(item)
+					}}
+					style={{backgroundColor: "#1a1a1a", width: 40, height: 40, padding: 5}}
+				/>
+				<IconButton
+					Icon={IconPack.Copy}
+					fill={'#fff'}
+					onClick={() => {
+						if (onCopy) onCopy(item)
+					}}
+					style={{backgroundColor: "#1a1a1a", width: 40, height: 40, padding: 5}}
+				/>
+				<IconButton
+					Icon={IconPack.Download}
+					fill={'none'}
+					stroke={'#fff'}
+					onClick={() => {
+						if (onDownload) onDownload(item)
+					}}
+					style={{backgroundColor: "#1a1a1a", width: 40, height: 40, padding: 5}}
+				/>
+				<IconButton
+					Icon={IconPack.Trash}
+					fill={'#fff'}
+					stroke={'#fff'}
+					onClick={() => {
+						if (onDelete) onDelete(item)
+					}}
+					style={{backgroundColor: "#b71c1c", width: 40, height: 40, padding: 5}}
+				/>
 			</div>
+			<h5 style={{maxWidth: 300}}>Name: {item.name}</h5>
 			<ProgressBar progress={item.progress}/>
 		</div>
 	);
