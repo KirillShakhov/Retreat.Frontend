@@ -1,6 +1,7 @@
 import {FC} from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import {Torrent} from "../../../services/torrentsService.ts";
+import {usePalette} from "../../../utils/themes/usePalette.ts";
 
 
 interface TorrentItemProps {
@@ -17,14 +18,16 @@ const TorrentItem: FC<TorrentItemProps> = ({
                                                onDownload
                                            }) => {
 
+    const palette = usePalette();
+
     return (
         <div
             key={item.id}
             style={{
-                background: "#333",
-                padding: "10px",
-                borderRadius: "6px",
-                color: "#fff"
+                background: palette.secondaryColor,
+                padding: 20,
+                borderRadius: 10,
+                color: palette.textColor
             }}
         >
             <div>Name: {item.name}</div>

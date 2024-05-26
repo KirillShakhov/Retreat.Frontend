@@ -46,7 +46,7 @@ const ControlPanel: FC<ControlPanelProps> = ({
             type="text"
             value={newTorrent}
             onChange={(e) => setNewTorrent(e.target.value)}
-            placeholder="Add new torrent"
+            placeholder="magnet:?xt=..."
             style={{flexGrow: 1}}
         />
         <IconButton
