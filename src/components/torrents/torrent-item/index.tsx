@@ -12,13 +12,15 @@ interface TorrentItemProps {
 	onCopy?: (item: Torrent) => void;
 	onDownload?: (item: Torrent) => void;
 	onDelete?: (item: Torrent) => void;
+	onWatch?: (item: Torrent) => void;
 }
 
 const TorrentItem: FC<TorrentItemProps> = ({
-	                                           item,
-	                                           onCopy,
-	                                           onDelete,
-	                                           onDownload
+                                           item,
+                                           onCopy,
+                                           onDelete,
+                                           onWatch,
+                                           onDownload
                                            }) => {
 
 	const palette = usePalette();
@@ -43,7 +45,7 @@ const TorrentItem: FC<TorrentItemProps> = ({
 						fill={'none'}
 						stroke={'#fff'}
 						onClick={() => {
-
+							if (onWatch) onWatch(item)
 						}}
 						style={{backgroundColor: "#1a1a1a", width: 40, height: 40, padding: 5}}
 					/>
