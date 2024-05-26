@@ -1,5 +1,6 @@
 import {ChangeEvent, FC, useRef, useState} from "react";
 import 'react-toastify/dist/ReactToastify.css';
+import {IconPack} from "../../../icons";
 
 interface ControlPanelProps {
     addMagnet?: (value: string) => void;
@@ -34,14 +35,19 @@ const ControlPanel: FC<ControlPanelProps> = ({
             placeholder="Add new torrent"
             style={{ flexGrow: 1 }}
         />
-        <button onClick={handleAddTorrent}>Add Torrent</button>
+        <button onClick={handleAddTorrent}>
+            Add Magnet
+            <IconPack.Magnet />
+        </button>
         <input
             type="file"
             ref={fileInputRef}
             onChange={handleAddFileTorrent}
             style={{display: "none"}}
         />
-        <button onClick={() => fileInputRef.current?.click()}>Add File</button>
+        <button onClick={() => fileInputRef.current?.click()}>
+            Torrent File
+        </button>
     </div>
 };
 
