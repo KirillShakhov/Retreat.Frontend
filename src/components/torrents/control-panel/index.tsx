@@ -37,7 +37,7 @@ const ControlPanel: FC<ControlPanelProps> = ({
         />
         <button onClick={handleAddTorrent}>
             Add Magnet
-            <IconPack.Magnet />
+            <IconPack.Magnet fill={'#fff'} />
         </button>
         <input
             type="file"

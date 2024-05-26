@@ -1,5 +1,5 @@
-import Magnet from "./svg/magnet.svg";
+import Magnet  from "./svg/magnet.svg";
 
-export const IconPack = {
+export const IconPack  = {
     Magnet,
 };
