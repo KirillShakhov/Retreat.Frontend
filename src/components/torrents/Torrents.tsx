@@ -20,14 +20,12 @@ const Torrents: FC = () => {
 
   const fetchTorrents = () => {
     torrentsService().then((data) => {
-      // console.log(`data: ${JSON.stringify(data.data)}`);
       setTorrents(data.data);
     });
   };
 
   const onDelete = (item: Torrent) => {
     deleteTorrent(item.id).then(() => {
-      console.log('handleDeleteTorrent complete')
       fetchTorrents();
     });
   };
@@ -84,12 +82,12 @@ const Torrents: FC = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 20 }}>
         <h1>Torrents</h1>
         <ControlPanel addMagnet={addMagnet} addFile={addFile} />
         <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
           {torrents.map((torrent) => (
-            <TorrentItem item={torrent} onCopy={onCopy} onDelete={onDelete} onDownload={onDownload} />
+            <TorrentItem key={torrent.id} item={torrent} onCopy={onCopy} onDelete={onDelete} onDownload={onDownload} />
           ))}
         </div>
       </div>

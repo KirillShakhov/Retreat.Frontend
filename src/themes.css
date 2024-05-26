@@ -1,6 +1,7 @@
 :root {
     --background-color: #242424;
-    --text-color: rgba(255, 255, 255, 0.87);
+    --text-color: #e6e6e6;
+    --placeholder-color: #9f9f9f;
     --primary-color: #646cff;
     --secondary-color: #555;
     --danger-color: #b71c1c;
@@ -17,6 +18,7 @@
 [data-theme="light"] {
     --background-color: #ffffff;
     --text-color: #213547;
+    --placeholder-color: #9f9f9f;
     --primary-color: #535bf2;
     --secondary-color: #ddd;
     --danger-color: #d32f2f;

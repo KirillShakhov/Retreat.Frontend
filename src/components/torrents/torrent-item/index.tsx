@@ -22,7 +22,6 @@ const TorrentItem: FC<TorrentItemProps> = ({
 
     return (
         <div
-            key={item.id}
             style={{
                 background: palette.secondaryColor,
                 padding: 20,
@@ -31,28 +30,28 @@ const TorrentItem: FC<TorrentItemProps> = ({
             }}
         >
             <div>Name: {item.name}</div>
-            <div style={{display: "flex", alignItems: "center", gap: 10}}>
-                <span>Progress:</span>
-                <div
-                    style={{
-                        background: "#555",
-                        borderRadius: "4px",
-                        width: "100%",
-                        marginLeft: "10px",
-                        overflow: "hidden"
-                    }}
-                >
-                    <div
-                        style={{
-                            background: "#646cff",
-                            width: `${item.progress}%`,
-                            height: "10px",
-                            borderRadius: "4px"
-                        }}
-                    />
-                </div>
-                <span>{item.progress}%</span>
-            </div>
+            {/*<div style={{display: "flex", alignItems: "center", gap: 10}}>*/}
+            {/*    <span>Progress:</span>*/}
+            {/*    <div*/}
+            {/*        style={{*/}
+            {/*            background: "#555",*/}
+            {/*            borderRadius: "4px",*/}
+            {/*            width: "100%",*/}
+            {/*            marginLeft: "10px",*/}
+            {/*            overflow: "hidden"*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        <div*/}
+            {/*            style={{*/}
+            {/*                background: "#646cff",*/}
+            {/*                width: `${item.progress}%`,*/}
+            {/*                height: "10px",*/}
+            {/*                borderRadius: "4px"*/}
+            {/*            }}*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*    <span>{item.progress}%</span>*/}
+            {/*</div>*/}
             <div>Time: {new Date(item.time).toLocaleString()}</div>
             <div style={{marginTop: "10px", display: "flex", gap: "10px"}}>
                 <button
