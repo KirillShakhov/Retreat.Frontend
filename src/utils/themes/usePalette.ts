@@ -7,8 +7,10 @@ const getCssVariable = (variableName: string): string => {
 };
 
 const getPalette = () => ({
+	whiteColor: getCssVariable('--while-color'),
 	backgroundColor: getCssVariable('--background-color'),
 	textColor: getCssVariable('--text-color'),
+	placeholderColor: getCssVariable('--placeholder-color'),
 	primaryColor: getCssVariable('--primary-color'),
 	secondaryColor: getCssVariable('--secondary-color'),
 	dangerColor: getCssVariable('--danger-color'),
