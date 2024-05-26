@@ -1,5 +1,12 @@
 import {FC, useEffect, useState} from "react";
-import {addTorrentFile, deleteTorrent, getStreamUrl, Torrent, torrentsService} from "../../services/torrentsService.ts";
+import {
+	addTorrentFile,
+	addTorrentMagnet,
+	deleteTorrent,
+	getStreamUrl,
+	Torrent,
+	torrentsService
+} from "../../services/torrentsService.ts";
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TorrentItem from "./torrent-item";
@@ -71,10 +78,9 @@ const Torrents: FC = () => {
 	};
 
 	const addMagnet = (magnet: string) => {
-		console.log(magnet)
-		// addTorrentMagnet(magnet).then(() => {
-		//   fetchTorrents();
-		// });
+		addTorrentMagnet(magnet).then(() => {
+			fetchTorrents();
+		});
 	};
 
 	const addFile = (file: File) => {

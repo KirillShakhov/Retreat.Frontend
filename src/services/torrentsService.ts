@@ -30,20 +30,6 @@ export const getStreamUrl = (id: string): string => {
   return `${API_URL}/stream?id=${id}`;
 };
 
-export const startTorrent = async (id: string): Promise<void> => {
-  // Replace with your API call
-  await fetch(`${API_URL}/torrents/start/${id}`, {
-    method: "POST",
-  });
-};
-
-export const pauseTorrent = async (id: string): Promise<void> => {
-  // Replace with your API call
-  await fetch(`${API_URL}/torrents/pause/${id}`, {
-    method: "POST",
-  });
-};
-
 export const addTorrentFile = async (file: File): Promise<void> => {
   const formData = new FormData();
   formData.append("file", file);

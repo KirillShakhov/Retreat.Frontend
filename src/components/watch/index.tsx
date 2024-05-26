@@ -16,6 +16,9 @@ const Watch: FC = () => {
 
 	useEffect(()=>{
 		document.body.style.overflow = "hidden";
+		return () => {
+			document.body.style.overflow = 'none';
+		}
 	});
 
 	return <>
