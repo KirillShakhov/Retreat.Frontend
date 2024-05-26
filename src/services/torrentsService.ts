@@ -26,6 +26,10 @@ export const deleteTorrent = async (id: string): Promise<void> => {
   return axios.get(`${API_URL}/delete?id=${id}`);
 };
 
+export const getStreamUrl = (id: string): string => {
+  return `${API_URL}/stream?id=${id}`;
+};
+
 export const startTorrent = async (id: string): Promise<void> => {
   // Replace with your API call
   await fetch(`${API_URL}/torrents/start/${id}`, {
