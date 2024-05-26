@@ -88,7 +88,7 @@ const Torrents: FC = () => {
 
   return (
     <>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         <h1>Torrents</h1>
         <ControlPanel addMagnet={addMagnet} addFile={addFile} />
         <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
