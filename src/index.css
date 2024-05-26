@@ -58,19 +58,6 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: var(--text-color);
-    background-color: var(--background-color);
-  }
-  a:hover {
-    color: var(--scrollbar-thumb);
-  }
-  button {
-    background-color: var(--button-bg);
-  }
-}
-
 input {
   border: 1px solid var(--scrollbar-track);
   background-color: var(--button-bg);
@@ -92,22 +79,6 @@ input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 
-@media (prefers-color-scheme: light) {
-  input {
-    background-color: var(--button-bg);
-    color: var(--text-color);
-    border: 1px solid var(--scrollbar-track);
-  }
-
-  input::placeholder {
-    color: rgba(33, 53, 71, 0.5);
-  }
-
-  input:focus {
-    box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.3);
-  }
-}
-
 /* Scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
@@ -126,19 +97,4 @@ input::placeholder {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--scrollbar-thumb-hover); /* Slightly lighter handle on hover */
-}
-
-@media (prefers-color-scheme: light) {
-  ::-webkit-scrollbar-track {
-    background: var(--scrollbar-track); /* Lighter track color in light mode */
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb); /* Lighter handle color in light mode */
-    border: 2px solid var(--scrollbar-track);
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover); /* Darker handle on hover in light mode */
-  }
 }

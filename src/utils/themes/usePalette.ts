@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useTheme } from './themeContext';
+import {useTheme} from "./useTheme.ts";
 
 const getCssVariable = (variableName: string): string => {
 	const root = document.documentElement;
@@ -27,6 +27,7 @@ export const usePalette = () => {
 	const [palette, setPalette] = useState(getPalette());
 
 	useEffect(() => {
+		console.log('palette: '+JSON.stringify(palette));
 		setPalette(getPalette());
 	}, [theme]);
 
