@@ -1,6 +1,8 @@
 import {ChangeEvent, FC, useRef, useState} from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import {IconPack} from "../../../icons";
+import IconButton from "../../../ui/icon-button";
+import {toast} from "react-toastify";
 
 interface ControlPanelProps {
     addMagnet?: (value: string) => void;
@@ -15,7 +17,19 @@ const ControlPanel: FC<ControlPanelProps> = ({
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleAddTorrent = () => {
-        if (newTorrent === '') return
+        if (newTorrent === '') {
+            toast.error('URL field is empty!', {
+                position: "bottom-center",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return
+        }
         if (addMagnet) addMagnet(newTorrent);
         setNewTorrent("");
     };
@@ -33,21 +47,24 @@ const ControlPanel: FC<ControlPanelProps> = ({
             value={newTorrent}
             onChange={(e) => setNewTorrent(e.target.value)}
             placeholder="Add new torrent"
-            style={{ flexGrow: 1 }}
+            style={{flexGrow: 1}}
         />
-        <button onClick={handleAddTorrent}>
-            Add Magnet
-            <IconPack.Magnet fill={'#fff'} />
-        </button>
+        <IconButton
+            onClick={handleAddTorrent}
+            label="Add Magnet"
+            Icon={IconPack.Magnet}
+        />
         <input
             type="file"
             ref={fileInputRef}
             onChange={handleAddFileTorrent}
             style={{display: "none"}}
         />
-        <button onClick={() => fileInputRef.current?.click()}>
-            Torrent File
-        </button>
+        <IconButton
+            onClick={() => fileInputRef.current?.click()}
+            label="Torrent File"
+            Icon={IconPack.FileUpload}
+        />
     </div>
 };
 
