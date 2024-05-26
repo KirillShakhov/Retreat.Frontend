@@ -1,0 +1,15 @@
+{
+  "short_name": "Retreat",
+  "name": "Retreat Cinema",
+  "icons": [
+    {
+      "src": "retreat.webp",
+      "sizes": "1024x1024 512x512 128x128 64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
