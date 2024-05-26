@@ -5,7 +5,7 @@ import {
   deleteTorrent,
   getStreamUrl, addTorrentMagnet, addTorrentFile
 } from "../../services/torrentsService.ts";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TorrentItem from "./torrent-item";
 import ControlPanel from "./control-panel";
@@ -88,9 +88,6 @@ const Torrents: FC = () => {
 
   return (
     <>
-      <div style={{position: 'absolute'}}>
-        <ToastContainer />
-      </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <h1>Torrents</h1>
         <ControlPanel addMagnet={addMagnet} addFile={addFile} />
