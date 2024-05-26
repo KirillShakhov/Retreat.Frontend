@@ -26,15 +26,15 @@ const ControlPanel: FC<ControlPanelProps> = ({
         }
     };
 
-    return <div style={{marginBottom: "20px"}}>
+    return <div style={{width: '100%', display: 'flex', justifyContent: 'space-between', gap: 10}}>
         <input
             type="text"
             value={newTorrent}
             onChange={(e) => setNewTorrent(e.target.value)}
             placeholder="Add new torrent"
-            style={{marginRight: "10px"}}
+            style={{ flexGrow: 1 }}
         />
-        <button onClick={handleAddTorrent} style={{marginRight: "10px"}}>Add Torrent</button>
+        <button onClick={handleAddTorrent}>Add Torrent</button>
         <input
             type="file"
             ref={fileInputRef}

@@ -1,6 +1,6 @@
 import {FC} from "react";
 import 'react-toastify/dist/ReactToastify.css';
-import {Torrent} from "../../services/torrentsService.ts";
+import {Torrent} from "../../../services/torrentsService.ts";
 
 
 interface TorrentItemProps {

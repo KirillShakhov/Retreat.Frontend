@@ -7,8 +7,8 @@ import {
 } from "../../services/torrentsService.ts";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import TorrentItem from "./TorrentItem.tsx";
-import ControlPanel from "./ControlPanel.tsx";
+import TorrentItem from "./torrent-item";
+import ControlPanel from "./control-panel";
 
 const Torrents: FC = () => {
   const [torrents, setTorrents] = useState<Torrent[]>([]);
@@ -91,7 +91,7 @@ const Torrents: FC = () => {
       <div style={{position: 'absolute'}}>
         <ToastContainer />
       </div>
-      <div style={{ textAlign: "start", padding: "20px" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <h1>Torrents</h1>
         <ControlPanel addMagnet={addMagnet} addFile={addFile} />
         <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
