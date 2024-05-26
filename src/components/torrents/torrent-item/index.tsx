@@ -39,6 +39,15 @@ const TorrentItem: FC<TorrentItemProps> = ({
 				<h3>Name: {item.name}</h3>
 				<div style={{display: "flex", gap: "10px"}}>
 					<IconButton
+						Icon={IconPack.Tv}
+						fill={'none'}
+						stroke={'#fff'}
+						onClick={() => {
+
+						}}
+						style={{backgroundColor: "#1a1a1a", width: 40, height: 40, padding: 5}}
+					/>
+					<IconButton
 						Icon={IconPack.Copy}
 						fill={'#fff'}
 						onClick={() => {
