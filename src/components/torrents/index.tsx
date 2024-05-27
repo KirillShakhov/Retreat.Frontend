@@ -42,13 +42,7 @@ const Torrents: FC = () => {
 
 	const onDownload = (item: Torrent) => {
 		const url = getStreamUrl(item.id);
-		const link = document.createElement('a');
-		link.setAttribute('download', url);
-		link.href = url;
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
-		URL.revokeObjectURL(url);
+		window.open(url, '_blank')?.focus();
 	};
 
 	const onCopy = (item: Torrent) => {

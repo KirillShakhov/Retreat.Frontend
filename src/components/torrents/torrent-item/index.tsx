@@ -72,7 +72,7 @@ const TorrentItem: FC<TorrentItemProps> = ({
 						if (onDelete) onDelete(item)
 					}}
 					style={{backgroundColor: "#b71c1c", width: 40, height: 40, padding: 5}}
-				/>f
+				/>
 			</div>
 			<h5>Name:</h5>
 			<h5 style={{width: '100%', wordWrap: 'break-word', wordBreak: 'break-all'}}>{item.name}</h5>
