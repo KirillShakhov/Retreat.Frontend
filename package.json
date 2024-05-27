@@ -1,7 +1,7 @@
 {
   "name": "retreat-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@svgr/plugin-jsx": "^8.1.0",
     "axios": "^1.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-player": "^2.16.0",
     "react-router-dom": "^6.23.1",
     "react-toastify": "^10.0.5"
   },
@@ -26,6 +28,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "vite-plugin-svgr": "^4.2.0"
   }
 }
