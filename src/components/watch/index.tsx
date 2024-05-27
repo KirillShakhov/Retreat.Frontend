@@ -23,7 +23,7 @@ const Watch: FC = () => {
 
 	return <>
 		<div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'black'}}>
-			{url && <ReactPlayer url={url} playing={true} controls={true} width='100%' height='100%'/>}
+			{url && <ReactPlayer url={url} playing={true} controls={true} light={true} width='100%' height='100%'/>}
 			<div style={{position: 'absolute', top: 10, right: 10}}>
 				<IconButton
 					Icon={IconPack.Cross}
