@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import TorrentItem from "./torrent-item";
 import ControlPanel from "./control-panel";
 import {useNavigate} from "react-router-dom";
+import AddTorrentModal from "../modals/add-torrent/index.tsx";
 
 const Torrents: FC = () => {
 	const navigate = useNavigate();
@@ -90,6 +91,11 @@ const Torrents: FC = () => {
 
 	return (
 		<>
+			<AddTorrentModal onClose={function (): void {
+				console.log("onClose");
+			} } onAdd={function (torrentName: string, selectedFiles: string[]): void {
+				console.log(`AddTorrentModal ${torrentName} ${JSON.stringify(selectedFiles)}`);
+			} } />
 			<div style={{
 				width: '100%',
 				display: 'flex',
