@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { usePalette } from "../../../utils/themes/usePalette";
 import './styles.css';
 
@@ -101,40 +101,61 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
                     const currentPath = [...path, node.name];
                     const checkboxId = `checkbox-${currentPath.join('-')}`;
                     const isCollapsed = collapsed[currentPath.join('-')] || false;
+                    const containerRef = useRef<HTMLDivElement>(null);
+
+                    useEffect(() => {
+                        if (containerRef.current) {
+                            if (isCollapsed) {
+                                containerRef.current.style.maxHeight = '0';
+                            } else {
+                                containerRef.current.style.maxHeight = `${containerRef.current.scrollHeight}px`;
+                            }
+                        }
+                    }, [isCollapsed]);
+
                     return (
-                        <li key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
-                            {node.children && (
-                                <span
-                                    className={`toggle-arrow ${isCollapsed ? 'collapsed' : ''}`}
-                                    onClick={() => handleToggleCollapse(currentPath)}
-                                >
-                                    &#9662;
-                                </span>
-                            )}
-                            <div className="checkbox-wrapper-30" style={{ marginLeft: node.children ? '0' : '32px' }}>
-                                <span className="checkbox">
-                                    <input
-                                        type="checkbox"
-                                        id={checkboxId}
-                                        className={`${node.indeterminate ? 'indeterminate' : ''}`}
-                                        checked={!!node.checked}
-                                        onChange={() => toggleCheckbox(currentPath)}
-                                        ref={el => {
-                                            if (el) el.indeterminate = !!node.indeterminate;
-                                        }}
-                                    />
-                                    <svg>
-                                        <use xlinkHref="#checkbox-30" className="checkbox"></use>
+                        <li key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '0.5em' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                {node.children && (
+                                    <span
+                                        className={`toggle-arrow ${isCollapsed ? 'collapsed' : ''}`}
+                                        onClick={() => handleToggleCollapse(currentPath)}
+                                    >
+                                        &#9662;
+                                    </span>
+                                )}
+                                <div className="checkbox-wrapper-30" style={{ marginLeft: node.children ? '0' : '24px' }}>
+                                    <span className="checkbox">
+                                        <input
+                                            type="checkbox"
+                                            id={checkboxId}
+                                            className={`${node.indeterminate ? 'indeterminate' : ''}`}
+                                            checked={!!node.checked}
+                                            onChange={() => toggleCheckbox(currentPath)}
+                                            ref={el => {
+                                                if (el) el.indeterminate = !!node.indeterminate;
+                                            }}
+                                        />
+                                        <svg>
+                                            <use xlinkHref="#checkbox-30" className="checkbox"></use>
+                                        </svg>
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
+                                        <symbol id="checkbox-30" viewBox="0 0 22 22">
+                                            <path fill="none" stroke="currentColor" d="M5.5,11.3L9,14.8L20.2,3.3l0,0c-0.5-1-1.5-1.8-2.7-1.8h-13c-1.7,0-3,1.3-3,3v13c0,1.7,1.3,3,3,3h13c1.7,0,3-1.3,3-3v-13c0-0.4-0.1-0.8-0.3-1.2" />
+                                        </symbol>
                                     </svg>
-                                </span>
-                                <svg xmlns="http://www.w3.org/2000/svg" style={{ display: 'none' }}>
-                                    <symbol id="checkbox-30" viewBox="0 0 22 22">
-                                        <path fill="none" stroke="currentColor" d="M5.5,11.3L9,14.8L20.2,3.3l0,0c-0.5-1-1.5-1.8-2.7-1.8h-13c-1.7,0-3,1.3-3,3v13c0,1.7,1.3,3,3,3h13c1.7,0,3-1.3,3-3v-13c0-0.4-0.1-0.8-0.3-1.2" />
-                                    </symbol>
-                                </svg>
+                                </div>
+                                <span style={{ marginLeft: '8px', verticalAlign: 'middle' }}>{node.name}</span>
                             </div>
-                            <span style={{ marginLeft: '8px' }}>{node.name}</span>
-                            {node.children && !isCollapsed && renderTree(node.children, currentPath)}
+                            {node.children && (
+                                <div
+                                    ref={containerRef}
+                                    className={`collapsible ${isCollapsed ? '' : 'expanded'}`}
+                                >
+                                    {renderTree(node.children, currentPath)}
+                                </div>
+                            )}
                         </li>
                     );
                 })}
