@@ -24,23 +24,23 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
     ]);
     const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
 
-    useEffect(() => {
-        const updateIndeterminateState = (nodes: FileNode[]): FileNode[] => {
-            return nodes.map(node => {
-                if (node.children) {
-                    const updatedChildren = updateIndeterminateState(node.children);
-                    const allChecked = updatedChildren.every(child => child.checked);
-                    const someChecked = updatedChildren.some(child => child.checked || child.indeterminate);
-                    node.checked = allChecked;
-                    node.indeterminate = !allChecked && someChecked;
-                    node.children = updatedChildren;
-                }
-                return node;
-            });
-        };
+    const updateIndeterminateState = (nodes: FileNode[]): FileNode[] => {
+        return nodes.map(node => {
+            if (node.children) {
+                const updatedChildren = updateIndeterminateState(node.children);
+                const allChecked = updatedChildren.every(child => child.checked);
+                const someChecked = updatedChildren.some(child => child.checked || child.indeterminate);
+                node.checked = allChecked;
+                node.indeterminate = !allChecked && someChecked;
+                node.children = updatedChildren;
+            }
+            return node;
+        });
+    };
 
+    useEffect(() => {
         setFiles(prevFiles => updateIndeterminateState(prevFiles));
-    }, [files]);
+    }, []);
 
     const toggleCheckbox = (path: string[]) => {
         const toggle = (nodes: FileNode[], path: string[]): FileNode[] => {
@@ -61,7 +61,10 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
                 return node;
             });
         };
-        setFiles(prevFiles => toggle(prevFiles, path));
+        setFiles(prevFiles => {
+            const updatedFiles = toggle(prevFiles, path);
+            return updateIndeterminateState(updatedFiles);
+        });
     };
 
     const handleAdd = () => {
@@ -108,7 +111,7 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
                                     &#9662;
                                 </span>
                             )}
-                            <div className="checkbox-wrapper-30">
+                            <div className="checkbox-wrapper-30" style={{ marginLeft: node.children ? '0' : '32px' }}>
                                 <span className="checkbox">
                                     <input
                                         type="checkbox"
