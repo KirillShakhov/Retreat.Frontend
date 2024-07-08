@@ -115,3 +115,32 @@
     max-height: 500px;
     /* Установите максимальную высоту в зависимости от ваших данных */
 }
+
+@keyframes burning {
+    0% {
+        box-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500, 0 0 30px #ff4500, 0 0 40px #ff8c00, 0 0 50px #ff8c00, 0 0 60px #ff8c00, 0 0 70px #ff8c00, 0 0 80px #ff4500;
+    }
+    50% {
+        box-shadow: 0 0 20px #ff8c00, 0 0 30px #ff8c00, 0 0 40px #ff8c00, 0 0 50px #ff4500, 0 0 60px #ff4500, 0 0 70px #ff4500, 0 0 80px #ff4500, 0 0 90px #ff8c00;
+    }
+    100% {
+        box-shadow: 0 0 10px #ff4500, 0 0 20px #ff4500, 0 0 30px #ff4500, 0 0 40px #ff8c00, 0 0 50px #ff8c00, 0 0 60px #ff8c00, 0 0 70px #ff8c00, 0 0 80px #ff4500;
+    }
+}
+
+.burning-button {
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    position: relative;
+    animation: burning 1.5s infinite;
+    transition: background-color 0.3s;
+}
+
+.burning-button:hover {
+    background-color: #ff8c00;
+}

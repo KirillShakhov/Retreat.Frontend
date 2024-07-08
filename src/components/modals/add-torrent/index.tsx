@@ -1,8 +1,9 @@
-import { FC, useState, useEffect, useRef } from "react";
+import { FC, useState, useEffect } from "react";
 import { usePalette } from "../../../utils/themes/usePalette";
 import './styles.css';
 
-interface FileNode {
+export interface FileNode {
+    id: string;
     name: string;
     children?: FileNode[];
     checked?: boolean;
@@ -10,18 +11,16 @@ interface FileNode {
 }
 
 interface AddTorrentModalProps {
+    name: string;
+    files: FileNode[];
     onClose: () => void;
     onAdd: (torrentName: string, selectedFiles: string[]) => void;
 }
 
-const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
+const AddTorrentModal: FC<AddTorrentModalProps> = ({ name, files: inFiles, onClose, onAdd }) => {
     const palette = usePalette();
-    const [torrentName, setTorrentName] = useState("");
-    const [files, setFiles] = useState<FileNode[]>([
-        { name: "File1.mp4" },
-        { name: "File2.mp4" },
-        { name: "Folder1", children: [{ name: "File3.mp4" }, { name: "File4.mp4" }] },
-    ]);
+    const [torrentName, setTorrentName] = useState(name);
+    const [files, setFiles] = useState<FileNode[]>(inFiles);
     const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
 
     const updateIndeterminateState = (nodes: FileNode[]): FileNode[] => {
@@ -46,7 +45,7 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
         const toggle = (nodes: FileNode[], path: string[]): FileNode[] => {
             if (path.length === 0) return nodes;
             return nodes.map(node => {
-                if (node.name === path[0]) {
+                if (node.id === path[0]) {
                     if (path.length === 1) {
                         const checked = !node.checked;
                         return {
@@ -71,7 +70,7 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
         const getSelectedFiles = (nodes: FileNode[], parentPath: string = ''): string[] => {
             let selectedFiles: string[] = [];
             nodes.forEach(node => {
-                const currentPath = parentPath ? `${parentPath}/${node.name}` : node.name;
+                const currentPath = parentPath ? `${parentPath}/${node.id}` : node.id;
                 if (node.checked) {
                     selectedFiles.push(currentPath);
                 }
@@ -98,23 +97,12 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
         return (
             <ul style={{ listStyleType: 'none', paddingLeft: path.length ? '1em' : 0 }}>
                 {nodes.map((node, index) => {
-                    const currentPath = [...path, node.name];
+                    const currentPath = [...path, node.id];
                     const checkboxId = `checkbox-${currentPath.join('-')}`;
                     const isCollapsed = collapsed[currentPath.join('-')] || false;
-                    const containerRef = useRef<HTMLDivElement>(null);
-
-                    useEffect(() => {
-                        if (containerRef.current) {
-                            if (isCollapsed) {
-                                containerRef.current.style.maxHeight = '0';
-                            } else {
-                                containerRef.current.style.maxHeight = `${containerRef.current.scrollHeight}px`;
-                            }
-                        }
-                    }, [isCollapsed]);
 
                     return (
-                        <li key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '0.5em' }}>
+                        <li key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', margin: 0 }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 {node.children && (
                                     <span
@@ -132,9 +120,6 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
                                             className={`${node.indeterminate ? 'indeterminate' : ''}`}
                                             checked={!!node.checked}
                                             onChange={() => toggleCheckbox(currentPath)}
-                                            ref={el => {
-                                                if (el) el.indeterminate = !!node.indeterminate;
-                                            }}
                                         />
                                         <svg>
                                             <use xlinkHref="#checkbox-30" className="checkbox"></use>
@@ -146,11 +131,15 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
                                         </symbol>
                                     </svg>
                                 </div>
-                                <span style={{ marginLeft: '8px', verticalAlign: 'middle' }}>{node.name}</span>
+                                <span
+                                    style={{ marginLeft: '8px', verticalAlign: 'middle' }}
+                                    onClick={() => handleToggleCollapse(currentPath)}
+                                >
+                                    {node.name}
+                                </span>
                             </div>
                             {node.children && (
                                 <div
-                                    ref={containerRef}
                                     className={`collapsible ${isCollapsed ? '' : 'expanded'}`}
                                 >
                                     {renderTree(node.children, currentPath)}
@@ -179,23 +168,22 @@ const AddTorrentModal: FC<AddTorrentModalProps> = ({ onClose, onAdd }) => {
             boxShadow: '0 0 10px rgba(0,0,0,0.5)',
             display: 'flex',
             flexDirection: 'column',
+            gap: 20,
         }}>
             <h2>Add Torrent</h2>
-            <div style={{ marginBottom: 20 }}>
-                <input
-                    type="text"
-                    value={torrentName}
-                    onChange={(e) => setTorrentName(e.target.value)}
-                    placeholder="Torrent Name"
-                    style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
-                />
-            </div>
-            <div style={{ flexGrow: 1, overflowY: 'auto', marginBottom: 20 }}>
+            <input
+                type="text"
+                value={torrentName}
+                onChange={(e) => setTorrentName(e.target.value)}
+                placeholder="Torrent Name"
+                style={{ width: '100%', padding: 8, boxSizing: 'border-box' }}
+            />
+            <div style={{ flexGrow: 1, overflowY: 'auto' }}>
                 {renderTree(files)}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 'auto' }}>
                 <button onClick={onClose} style={{ padding: '10px 20px' }}>Close</button>
-                <button onClick={handleAdd} style={{ padding: '10px 20px' }}>Add</button>
+                <button onClick={handleAdd} style={{ padding: '10px 20px' }} className="burning-button">Add</button>
             </div>
         </div>
     );

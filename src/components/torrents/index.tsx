@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from "react";
+import { FC, useEffect, useState } from "react";
 import {
 	addTorrentFile,
 	addTorrentMagnet,
@@ -7,16 +7,17 @@ import {
 	Torrent,
 	torrentsService
 } from "../../services/torrentsService.ts";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TorrentItem from "./torrent-item";
 import ControlPanel from "./control-panel";
-import {useNavigate} from "react-router-dom";
-import AddTorrentModal from "../modals/add-torrent/index.tsx";
+import { useNavigate } from "react-router-dom";
+import AddTorrentModal, { FileNode } from "../modals/add-torrent/index.tsx";
+import { usePopupController } from "../../utils/popup/PopupControllerContextType.tsx";
 
 const Torrents: FC = () => {
 	const navigate = useNavigate();
-
+	const popupController = usePopupController();
 	const [torrents, setTorrents] = useState<Torrent[]>([]);
 
 	useEffect(() => {
@@ -85,17 +86,20 @@ const Torrents: FC = () => {
 	};
 
 	const onWatch = (item: Torrent) => {
-		navigate(`/watch?url=${getStreamUrl(item.id)}`, {replace: true});
+		navigate(`/watch?url=${getStreamUrl(item.id)}`, { replace: true });
 	};
 
 
+	{/* <AddTorrentModal
+				onClose={function (): void {
+					console.log("onClose");
+				}} onAdd={function (torrentName: string, selectedFiles: string[]): void {
+					console.log(`AddTorrentModal ${torrentName} ${JSON.stringify(selectedFiles)}`);
+				}}
+			/> */}
+
 	return (
 		<>
-			<AddTorrentModal onClose={function (): void {
-				console.log("onClose");
-			} } onAdd={function (torrentName: string, selectedFiles: string[]): void {
-				console.log(`AddTorrentModal ${torrentName} ${JSON.stringify(selectedFiles)}`);
-			} } />
 			<div style={{
 				width: '100%',
 				display: 'flex',
@@ -106,8 +110,24 @@ const Torrents: FC = () => {
 				boxSizing: 'border-box',
 			}}>
 				<h1>Torrents</h1>
-				<ControlPanel addMagnet={addMagnet} addFile={addFile}/>
-				<div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
+				<button onClick={() => {
+					const files: FileNode[] = [
+						{ id: '0', name: 'File 1' },
+						{ id: '1', name: 'File 2' },
+						{ id: '2', name: 'File 3' },
+						{ id: '3', name: 'File 4' },
+					];
+					popupController.open(AddTorrentModal, {
+						name: "Default Torrent Name", files, onAdd: () => {
+							console.log('add torrent');
+						},
+						onClose: () => {
+							console.log('close modal');
+						}
+					});
+				}} >Test</button>
+				<ControlPanel addMagnet={addMagnet} addFile={addFile} />
+				<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
 					{torrents.map((torrent) => (
 						<TorrentItem
 							key={torrent.id}
