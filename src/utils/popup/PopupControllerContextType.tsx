@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode, FC, ComponentType } from 'react';
+import { createContext, useContext, useState, ReactNode, FC, ComponentType } from 'react';
 
 interface PopupControllerContextType {
     open: <T>(Component: ComponentType<T>, props?: T) => void;
@@ -8,6 +8,7 @@ interface PopupControllerContextType {
 const PopupControllerContext = createContext<PopupControllerContextType | undefined>(undefined);
 
 export const PopupControllerProvider: FC<{ children: ReactNode }> = ({ children }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [popup, setPopup] = useState<{ Component: ComponentType<any>, props: any } | null>(null);
 
     const open = <T,>(Component: ComponentType<T>, props: T = {} as T) => {
