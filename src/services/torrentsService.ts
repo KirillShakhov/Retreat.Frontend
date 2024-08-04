@@ -27,7 +27,7 @@ export const deleteTorrent = async (id: string): Promise<void> => {
 };
 
 export const getStreamUrl = (id: string): string => {
-  return `${API_URL}/api/stream?id=${id}`;
+  return `${window.location.protocol}//${window.location.host}/api/stream?id=${id}`;
 };
 
 export const addTorrentFile = async (file: File): Promise<void> => {
