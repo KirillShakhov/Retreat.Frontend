@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { ToastContainer } from "react-toastify";
-import { ThemeProvider } from "./utils/themes/ThemeContext.tsx";
-import { PopupControllerProvider } from './utils/popup/PopupControllerContextType.tsx';
+import { ThemeProvider } from "./context/ThemeContext.tsx";
+import {UserProvider} from "./context/UserContext.tsx";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<ThemeProvider>
-			<PopupControllerProvider>
+			<UserProvider>
 				<App />
-			</PopupControllerProvider>
+			</UserProvider>
 		</ThemeProvider>
 		<ToastContainer newestOnTop={true} />
 	</React.StrictMode>,

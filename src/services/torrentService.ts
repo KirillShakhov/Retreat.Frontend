@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from './api'; // <-- Импортируем наш настроенный клиент
 import {API_URL} from "./url.ts";
 
 export interface FileInfo {
@@ -20,15 +20,15 @@ export interface TorrentsResponse {
 }
 
 export const getTorrents = async (): Promise<TorrentsResponse> => {
-  return axios.get(`${API_URL}/api/torrents`);
+  return api.get(`${API_URL}/api/torrents`);
 }
 
 export const addTorrentMagnet = async (magnet: string): Promise<void> => {
-  return axios.get(`${API_URL}/api/magnet?uri=${magnet}`);
+  return api.get(`${API_URL}/api/magnet?uri=${magnet}`);
 };
 
 export const deleteTorrent = async (id: string): Promise<void> => {
-  return axios.get(`${API_URL}/api/delete?id=${id}`);
+  return api.get(`${API_URL}/api/delete?id=${id}`);
 };
 
 export const getStreamUrl = (torrentInfo: TorrentInfo, file: FileInfo): string => {

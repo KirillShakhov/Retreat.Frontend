@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode, useCallback, useEffect } from 'react';
-import { useThemeDetector } from './useThemeDetector';
+import { useThemeDetector } from '../utils/themes/useThemeDetector.ts';
 
 const THEME_DARK = 'dark';
 const THEME_LIGHT = 'light';

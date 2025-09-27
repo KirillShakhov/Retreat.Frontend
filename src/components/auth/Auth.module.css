@@ -1,0 +1,92 @@
+/* Основной контейнер формы */
+.container {
+    width: 100%;
+    max-width: 400px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 2rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+/* Сама форма */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Стилизация полей ввода */
+.input {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Сообщение об ошибке */
+.errorMessage {
+    color: #d93025;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Основная кнопка */
+.submitButton {
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+    background-color: #0056b3;
+}
+
+.submitButton:disabled {
+    background-color: #a0cffc;
+    cursor: not-allowed;
+}
+
+/* Кнопка-переключатель, стилизованная под ссылку */
+.toggleButton {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #007bff;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.toggleButton:hover {
+    text-decoration: underline;
+}
+
+/* Скрывает элементы визуально, но оставляет их для скринридеров */
+.visuallyHidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
