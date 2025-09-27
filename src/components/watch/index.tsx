@@ -1,4 +1,4 @@
-import {FC, useEffect} from "react";
+import {FC, useEffect, useMemo} from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import {useNavigate, useSearchParams} from "react-router-dom";
 import ReactPlayer from "react-player";
@@ -8,7 +8,8 @@ import IconButton from "../../ui/icon-button";
 const Watch: FC = () => {
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
-	const url = searchParams.get("url");
+	const url = searchParams.get("url") ?? '';
+	const token = localStorage.getItem('token');
 
 	const close = () => {
 		navigate(`/`, {replace: true});
@@ -21,9 +22,14 @@ const Watch: FC = () => {
 			document.body.style.overflow = originalOverflow;
 		};	});
 
+	const urlWithToken = useMemo<string>(() => {
+		if (!url || !token) return url;
+		return `${url}&token=${token}`;
+	}, [url, token]);
+
 	return <>
 		<div style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'black'}}>
-			{url && <ReactPlayer url={url} playing={true} controls={true} light={true} width='100%' height='100%'/>}
+			{url && <ReactPlayer url={urlWithToken} playing={true} controls={true} light={true} width='100%' height='100%'/>}
 			<div style={{position: 'absolute', top: 10, right: 10}}>
 				<IconButton
 					Icon={IconPack.Cross}
