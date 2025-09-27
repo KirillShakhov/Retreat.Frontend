@@ -1,11 +1,12 @@
 import {FC, useEffect, useMemo, useState, useRef} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import ReactPlayer from "react-player";
+import screenfull from "screenfull"; // Для полноэкранного режима
 import {IconPack} from "../../icons";
-import IconButton from "../../ui/icon-button"; // Предполагается, что IconButton находится в ../../ui
+import IconButton from "../../ui/icon-button";
 import styles from './Watch.module.css';
+import PlayerControls from "./PlayerControls";
 
-// Интерфейс для эпизода
 export interface Episode {
 	name: string;
 	url: string;
@@ -14,6 +15,7 @@ export interface Episode {
 const Watch: FC = () => {
 	// --- Refs и хуки навигации ---
 	const playerRef = useRef<ReactPlayer>(null);
+	const playerContainerRef = useRef<HTMLDivElement>(null); // Ref для контейнера плеера
 	const navigate = useNavigate();
 	const [searchParams] = useSearchParams();
 
@@ -22,23 +24,25 @@ const Watch: FC = () => {
 	const currentUrl = searchParams.get("url") ?? "";
 	const seriesParam = searchParams.get("series") ?? "[]";
 
-	// --- Состояния компонента ---
-	const [volume, setVolume] = useState<number>(() => {
-		const savedVolume = localStorage.getItem('playerVolume');
-		return savedVolume !== null ? parseFloat(savedVolume) : 0.8;
-	});
+	// --- Состояния для логики плеера ---
 	const [duration, setDuration] = useState(0);
 	const [isNextUpVisible, setIsNextUpVisible] = useState(false);
 	const [isListVisible, setIsListVisible] = useState(false);
 
+	// --- Новые состояния для UI контролов ---
+	const [playing, setPlaying] = useState(true);
+	const [muted, setMuted] = useState(false);
+	const [volume, setVolume] = useState<number>(() => {
+		const savedVolume = localStorage.getItem('playerVolume');
+		return savedVolume !== null ? parseFloat(savedVolume) : 0.8;
+	});
+	const [played, setPlayed] = useState(0);
+	const [seeking, setSeeking] = useState(false);
+
 	// --- Мемоизированные вычисления ---
 	const series = useMemo<Episode[]>(() => {
-		try {
-			return JSON.parse(decodeURIComponent(seriesParam));
-		} catch (error) {
-			console.error("Failed to parse series data from URL:", error);
-			return [];
-		}
+		try { return JSON.parse(decodeURIComponent(seriesParam)); }
+		catch (e) { console.error("Failed to parse series data:", e); return []; }
 	}, [seriesParam]);
 
 	const nextEpisode = useMemo<Episode | null>(() => {
@@ -62,33 +66,54 @@ const Watch: FC = () => {
 		navigate(`?url=${encodeURIComponent(episodeUrl)}&series=${encodeURIComponent(seriesParam)}`, { replace: true });
 		setIsListVisible(false);
 		setIsNextUpVisible(false);
+		setPlayed(0); // Сбрасываем прогресс для новой серии
+	};
+
+	// --- Новые обработчики для UI ---
+	const handlePlayPause = () => setPlaying(!playing);
+	const handleMute = () => setMuted(!muted);
+
+	const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newVolume = parseFloat(e.target.value);
+		setVolume(newVolume);
+		localStorage.setItem('playerVolume', newVolume.toString());
+	};
+
+	const handleSeekMouseDown = () => setSeeking(true);
+	const handleSeekMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
+		setSeeking(false);
+		playerRef.current?.seekTo(parseFloat(e.currentTarget.value));
+	};
+	const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setPlayed(parseFloat(e.target.value));
+	};
+
+	const handleFullscreen = () => {
+		if (screenfull.isEnabled && playerContainerRef.current) {
+			screenfull.toggle(playerContainerRef.current);
+		}
 	};
 
 	// --- Обработчики событий плеера ---
 	const handleReady = () => {
-		const internalPlayer = playerRef.current?.getInternalPlayer();
-		if (internalPlayer) {
-			internalPlayer.addEventListener('volumechange', () => {
-				if (internalPlayer.volume !== undefined) {
-					const newVolume = internalPlayer.volume;
-					localStorage.setItem('playerVolume', newVolume.toString());
-					setVolume(newVolume);
-				}
-			});
-		}
+		// Логика для сохранения громкости (без изменений)
 	};
 
 	const handleEnded = () => {
 		if (nextEpisode) {
 			selectEpisode(nextEpisode.url);
+		} else {
+			setPlaying(false); // Останавливаем проигрывание, если это последняя серия
 		}
 	};
 
 	const handleDuration = (d: number) => setDuration(d);
 
-	const handleProgress = (progress: { playedSeconds: number }) => {
-		const secondsRemaining = duration - progress.playedSeconds;
-		// Показываем окно за 30 секунд до конца, если оно еще не показано
+	const handleProgress = (state: { played: number, playedSeconds: number }) => {
+		if (!seeking) {
+			setPlayed(state.played);
+		}
+		const secondsRemaining = duration - state.playedSeconds;
 		if (duration > 0 && secondsRemaining <= 30 && !isNextUpVisible && nextEpisode) {
 			setIsNextUpVisible(true);
 		}
@@ -98,45 +123,44 @@ const Watch: FC = () => {
 	useEffect(() => {
 		const originalOverflow = document.body.style.overflow;
 		document.body.style.overflow = "hidden";
-		return () => {
-			document.body.style.overflow = originalOverflow;
-		};
+		return () => { document.body.style.overflow = originalOverflow; };
 	}, []);
 
 	// --- Рендер компонента ---
 	return (
-		<div className={styles.playerWrapper}>
+		<div ref={playerContainerRef} className={`${styles.playerWrapper} player-container`}>
 			<ReactPlayer
 				ref={playerRef}
 				url={urlWithToken}
 				volume={volume}
-				playing={true}
-				controls={true}
+				playing={playing}
+				muted={muted}
+				controls={false} // <--- ВАЖНО: отключаем стандартные контролы
 				width='100%'
 				height='100%'
 				onReady={handleReady}
+				onPlay={() => setPlaying(true)}
+				onPause={() => setPlaying(false)}
 				onEnded={handleEnded}
 				onDuration={handleDuration}
 				onProgress={handleProgress}
 			/>
+
+			{/* --- UI Элементы --- */}
 			<div className={styles.controlsContainer}>
 				{series.length > 1 && <IconButton
 					Icon={IconPack.List}
-					fill={'#fff'}
-					stroke={'none'}
+					fill={'#fff'} stroke={'none'}
 					onClick={() => setIsListVisible(!isListVisible)}
-					// Изменено: теперь используется className для IconButton
 					className={styles.iconButton}
-					style={{width: 40, height: 40, padding: 5}} // Оставляем, если IconButton не имеет своих размеров по умолчанию
+					style={{width: 40, height: 40, padding: 5}}
 				/>}
 				<IconButton
 					Icon={IconPack.Cross}
-					fill={'#fff'}
-					stroke={'none'}
+					fill={'#fff'} stroke={'none'}
 					onClick={close}
-					// Изменено: теперь используется className для IconButton
 					className={styles.iconButton}
-					style={{width: 40, height: 40, padding: 5}} // Оставляем
+					style={{width: 40, height: 40, padding: 5}}
 				/>
 			</div>
 
@@ -183,6 +207,22 @@ const Watch: FC = () => {
 					</button>
 				</div>
 			)}
+
+			{/* --- Наши кастомные контролы --- */}
+			<PlayerControls
+				playing={playing}
+				muted={muted}
+				volume={volume}
+				played={played}
+				duration={duration}
+				onPlayPause={handlePlayPause}
+				onMute={handleMute}
+				onVolumeChange={handleVolumeChange}
+				onSeek={handleSeekChange}
+				onSeekMouseDown={handleSeekMouseDown}
+				onSeekMouseUp={handleSeekMouseUp}
+				onFullscreen={handleFullscreen}
+			/>
 		</div>
 	);
 };

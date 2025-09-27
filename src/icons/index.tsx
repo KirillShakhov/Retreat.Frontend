@@ -6,6 +6,12 @@ import Download  from "./svg/download.svg";
 import Tv  from "./svg/tv.svg";
 import Cross  from "./svg/cross.svg";
 import List from "./svg/list.svg";
+import Play from './svg/play.svg';
+import Pause from './svg/pause.svg';
+import Volume from './svg/volume.svg';
+import Mute from './svg/mute.svg';
+import Fullscreen from './svg/fullscreen.svg';
+
 
 export const IconPack  = {
     Magnet,
@@ -15,5 +21,10 @@ export const IconPack  = {
     Download,
     Tv,
     Cross,
-    List
+    List,
+    Play,
+    Pause,
+    Volume,
+    Mute,
+    Fullscreen
 };
