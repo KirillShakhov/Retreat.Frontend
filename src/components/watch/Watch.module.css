@@ -64,6 +64,9 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background-color 0.2s;
     font-size: 0.95rem;
+    white-space: nowrap;      /* Запрещаем перенос текста на новую строку */
+    overflow: hidden;         /* Скрываем всё, что не помещается */
+    text-overflow: ellipsis;  /* Добавляем многоточие в конце */
 }
 
 .episodeItem:hover {
@@ -75,4 +78,63 @@
     background-color: var(--primary-color, #646cff);
     color: white;
     font-weight: bold;
+}
+
+.nextUpContainer {
+    position: absolute;
+    bottom: 90px;
+    right: 20px;
+    width: 100%;
+    max-width: 320px;
+    background-color: rgba(18, 18, 18, 0.9);
+    backdrop-filter: blur(10px);
+    color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+    z-index: 20;
+
+    /* Анимация появления */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.nextUpContainer.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.nextUpContainer p {
+    margin: 0 0 5px 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.nextUpContainer h4 {
+    margin: 0 0 15px 0;
+    font-size: 1rem;
+    font-weight: bold;
+    /* Обрезаем длинные названия */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nextUpButton {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    background-color: var(--primary-color, #646cff);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.nextUpButton:hover {
+    background-color: var(--scrollbar-thumb-hover, #7b83ff);
 }
