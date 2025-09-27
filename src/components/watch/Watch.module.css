@@ -205,3 +205,12 @@
     border-color: rgba(255, 255, 255, 0.25);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
+
+.clickOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Должен быть ниже, чем контролы (z-index: 21) */
+}
