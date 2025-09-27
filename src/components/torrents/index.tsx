@@ -4,10 +4,9 @@ import {
 	addTorrentMagnet,
 	deleteTorrent,
 	getStreamUrl,
-	Torrent,
-	torrentsService
-} from "../../services/torrentsService.ts";
-import { toast } from 'react-toastify';
+	getTorrents,
+	TorrentInfo,
+} from "../../services/torrentService.ts";
 import 'react-toastify/dist/ReactToastify.css';
 import TorrentItem from "./torrent-item";
 import ControlPanel from "./control-panel";
@@ -18,60 +17,23 @@ import { usePopupController } from "../../utils/popup/PopupControllerContextType
 const Torrents: FC = () => {
 	const navigate = useNavigate();
 	const popupController = usePopupController();
-	const [torrents, setTorrents] = useState<Torrent[]>([]);
+	const [torrents, setTorrents] = useState<TorrentInfo[]>([]);
+
+	const fetchTorrents = () => {
+		getTorrents().then((data) => {
+			setTorrents(data?.data ?? []);
+		});
+	};
 
 	useEffect(() => {
 		fetchTorrents();
 
 		const interval = setInterval(() => {
 			fetchTorrents();
-		}, 10000);
+		}, 5000);
 
 		return () => clearInterval(interval);
-	});
-
-	const fetchTorrents = () => {
-		torrentsService().then((data) => {
-			setTorrents(data.data);
-		});
-	};
-
-	const onDelete = (item: Torrent) => {
-		deleteTorrent(item.id).then(() => {
-			fetchTorrents();
-		});
-	};
-
-	const onDownload = (item: Torrent) => {
-		const url = getStreamUrl(item.id);
-		window.open(url, '_blank')?.focus();
-	};
-
-	const onCopy = (item: Torrent) => {
-		const url = getStreamUrl(item.id);
-		const selBox = document.createElement("textarea");
-		selBox.style.position = "fixed";
-		selBox.style.left = "0";
-		selBox.style.top = "0";
-		selBox.style.opacity = "0";
-		selBox.value = url;
-		document.body.appendChild(selBox);
-		selBox.focus();
-		selBox.select();
-		document.execCommand("copy");
-		document.body.removeChild(selBox);
-
-		toast.success('URL copied to clipboard!', {
-			position: "bottom-center",
-			autoClose: 3000,
-			hideProgressBar: true,
-			closeOnClick: true,
-			pauseOnHover: false,
-			draggable: true,
-			progress: undefined,
-			theme: "dark",
-		});
-	};
+	}, []);
 
 	const addMagnet = (magnet: string) => {
 		addTorrentMagnet(magnet).then(() => {
@@ -83,10 +45,6 @@ const Torrents: FC = () => {
 		addTorrentFile(file).then(() => {
 			fetchTorrents();
 		});
-	};
-
-	const onWatch = (item: Torrent) => {
-		navigate(`/watch?url=${getStreamUrl(item.id)}`, { replace: true });
 	};
 
 
@@ -133,10 +91,6 @@ const Torrents: FC = () => {
 						<TorrentItem
 							key={torrent.id}
 							item={torrent}
-							onCopy={onCopy}
-							onDelete={onDelete}
-							onDownload={onDownload}
-							onWatch={onWatch}
 						/>
 					))}
 				</div>

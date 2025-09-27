@@ -1,20 +1,25 @@
 import axios from 'axios';
 import {API_URL} from "./url.ts";
 
-export interface Torrent {
+export interface FileInfo {
   id: string,
   name: string,
   progress: number,
-  download: boolean,
+}
+
+
+export interface TorrentInfo {
+  id: string,
+  name: string,
   time: Date,
+  files: FileInfo[],
 }
 
 export interface TorrentsResponse {
-  data: Torrent[],
+  data: TorrentInfo[],
 }
 
-
-function torrentsService(): Promise<TorrentsResponse> {
+export const getTorrents = async (): Promise<TorrentsResponse> => {
   return axios.get(`${API_URL}/api/torrents`);
 }
 
@@ -26,8 +31,8 @@ export const deleteTorrent = async (id: string): Promise<void> => {
   return axios.get(`${API_URL}/api/delete?id=${id}`);
 };
 
-export const getStreamUrl = (id: string): string => {
-  return `${window.location.protocol}//${window.location.host}/api/stream?id=${id}`;
+export const getStreamUrl = (torrentInfo: TorrentInfo, file: FileInfo): string => {
+  return `${API_URL}/api/stream?id=${torrentInfo.id}&fileId=${file.id}`;
 };
 
 export const addTorrentFile = async (file: File): Promise<void> => {
@@ -39,5 +44,3 @@ export const addTorrentFile = async (file: File): Promise<void> => {
     body: formData,
   });
 };
-
-export { torrentsService };
