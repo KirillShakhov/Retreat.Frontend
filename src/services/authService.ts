@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL } from "./url.ts"; // Предполагается, что этот файл существует
+import { API_URL } from "./url.ts";
 
 /**
  * @interface Credentials
@@ -41,4 +41,14 @@ export const login = async (credentials: Credentials): Promise<LoginResponse> =>
 
     // axios помещает ответ от сервера в поле `data`
     return response.data;
+};
+
+export const check = async (token: string): Promise<boolean> => {
+    const response = await axios.get(`${API_URL}/api/me`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    return response.status === 200;
 };

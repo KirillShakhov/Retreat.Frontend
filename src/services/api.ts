@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from './url';
+import {useUser} from "../context/UserContext.tsx";
 
 // 1. Создаем инстанс axios с базовым URL
 const api = axios.create({
@@ -9,12 +10,11 @@ const api = axios.create({
 // 2. Добавляем интерцептор (перехватчик) запросов
 api.interceptors.request.use(
     (config) => {
-        // Перед каждым запросом получаем токен из localStorage
-        const token = localStorage.getItem('token');
+        const user = useUser();
 
         // Если токен есть, добавляем его в заголовок Authorization
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+        if (user.token) {
+            config.headers.Authorization = `Bearer ${user.token}`;
         }
 
         return config; // Возвращаем измененную конфигурацию

@@ -6,6 +6,7 @@ import {IconPack} from "../../icons";
 import IconButton from "../../ui/icon-button";
 import styles from './Watch.module.css';
 import PlayerControls from "./PlayerControls";
+import {useUser} from "../../context/UserContext.tsx";
 
 export interface Episode {
     name: string;
@@ -21,7 +22,7 @@ const Watch: FC = () => {
     const [searchParams] = useSearchParams();
 
     // --- Данные из URL ---
-    const token = localStorage.getItem('token');
+    const user = useUser();
     const currentUrl = searchParams.get("url") ?? "";
     const seriesParam = searchParams.get("series") ?? "[]";
 
@@ -57,10 +58,10 @@ const Watch: FC = () => {
     }, [series, currentUrl]);
 
     const urlWithToken = useMemo<string>(() => {
-        if (!currentUrl || !token) return currentUrl;
+        if (!currentUrl || !user.token) return currentUrl;
         const separator = currentUrl.includes('?') ? '&' : '?';
-        return `${currentUrl}${separator}token=${token}`;
-    }, [currentUrl, token]);
+        return `${currentUrl}${separator}token=${user.token}`;
+    }, [currentUrl, user]);
 
     // --- Функции-обработчики ---
     const close = () => navigate(`/`, {replace: true});
