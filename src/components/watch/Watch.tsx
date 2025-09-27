@@ -6,7 +6,7 @@ import {IconPack} from "../../icons";
 import IconButton from "../../ui/icon-button";
 import styles from './Watch.module.css';
 import PlayerControls from "./PlayerControls";
-import {useUser} from "../../context/UserContext.tsx";
+import {useUser} from "../../hooks/useUser.ts";
 
 export interface Episode {
     name: string;
