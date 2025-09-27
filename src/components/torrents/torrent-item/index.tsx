@@ -7,6 +7,7 @@ import IconButton from "../../../ui/icon-button";
 import {IconPack} from "../../../icons";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import {Episode} from "../../watch/Watch.tsx";
 
 interface TorrentItemProps {
     item: TorrentInfo;
@@ -16,12 +17,19 @@ const TorrentItem: FC<TorrentItemProps> = ({item}) => {
     const navigate = useNavigate();
     const palette = usePalette();
 
-    // Функции-обработчики остались без изменений,
-    // так как их логика уже была правильной.
-    const onWatch = (torrentInfo: TorrentInfo, file: FileInfo) => {
-        const streamUrl = getStreamUrl(torrentInfo, file);
-        const encodedStreamUrl = encodeURIComponent(streamUrl);
-        navigate(`/watch?url=${encodedStreamUrl}`, {replace: true});
+    const onWatch = (torrentInfo: TorrentInfo, selectedFile: FileInfo) => {
+        const seriesData: Episode[] = torrentInfo.files.map(file => ({
+            name: file.name,
+            url: getStreamUrl(torrentInfo, file),
+        }));
+
+        const serializedSeries = JSON.stringify(seriesData);
+        const encodedSeries = encodeURIComponent(serializedSeries);
+
+        const currentStreamUrl = getStreamUrl(torrentInfo, selectedFile);
+        const encodedCurrentUrl = encodeURIComponent(currentStreamUrl);
+
+        navigate(`/watch?url=${encodedCurrentUrl}&series=${encodedSeries}`, { replace: true });
     };
 
     const onDownload = (torrentInfo: TorrentInfo, file: FileInfo) => {

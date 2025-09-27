@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import './App.css'
 import Torrents from "./components/torrents";
-import Watch from "./components/watch";
+import Watch from "./components/watch/Watch.tsx";
 
 function App() {
 

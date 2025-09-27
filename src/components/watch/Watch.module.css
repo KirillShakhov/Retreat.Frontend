@@ -1,0 +1,78 @@
+/* Watch.module.css */
+
+.playerWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+}
+
+/* Контейнер для кнопок управления справа вверху */
+.controlsContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 20;
+}
+
+/* Панель со списком серий */
+.episodesPanel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 350px;
+    height: 100%;
+    background-color: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 10;
+}
+
+.episodesPanel.visible {
+    transform: translateX(0);
+}
+
+.episodesPanel h3 {
+    padding: 20px;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Список серий */
+.episodesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+/* Элемент списка (серия) */
+.episodeItem {
+    padding: 15px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s;
+    font-size: 0.95rem;
+}
+
+.episodeItem:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Активная (текущая) серия */
+.episodeItem.active {
+    background-color: var(--primary-color, #646cff);
+    color: white;
+    font-weight: bold;
+}
