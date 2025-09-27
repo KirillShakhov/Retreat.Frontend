@@ -67,7 +67,7 @@ const ControlPanel: FC<ControlPanelProps> = ({ addMagnet, addFile }) => {
 				value={newTorrent}
 				onChange={(e) => setNewTorrent(e.target.value)}
 				placeholder="magnet:?xt=..."
-				style={{ flexGrow: 1, minWidth: 100,  }}
+				style={{ flexGrow: 1, minWidth: 100, width: 0  }}
 			/>
 			<IconButton
 				onClick={handleAddTorrent}

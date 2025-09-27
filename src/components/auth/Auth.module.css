@@ -1,15 +1,24 @@
-/* Основной контейнер формы */
+/* Обертка для центрирования формы на странице */
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Занимает всю высоту экрана */
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* Основной контейнер формы, теперь использует переменные темы */
 .container {
     width: 100%;
     max-width: 400px;
-    margin: 40px auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 24px;
     padding: 2rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background-color: var(--button-bg); /* Используем фон, как у кнопок */
+    border: 1px solid var(--scrollbar-track); /* Граница в цвет трека скроллбара */
+    border-radius: 12px;
     box-sizing: border-box;
 }
 
@@ -17,51 +26,15 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-}
-
-/* Стилизация полей ввода */
-.input {
-    padding: 12px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.input:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    gap: 16px;
 }
 
 /* Сообщение об ошибке */
 .errorMessage {
-    color: #d93025;
+    /* Определяем переменную для цвета ошибки, с запасным вариантом */
+    color: var(--error-color, #e5484d);
     font-size: 0.9rem;
     text-align: center;
-}
-
-/* Основная кнопка */
-.submitButton {
-    padding: 12px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.submitButton:hover {
-    background-color: #0056b3;
-}
-
-.submitButton:disabled {
-    background-color: #a0cffc;
-    cursor: not-allowed;
 }
 
 /* Кнопка-переключатель, стилизованная под ссылку */
@@ -69,14 +42,17 @@
     background: none;
     border: none;
     padding: 0;
-    color: #007bff;
-    text-align: center;
+    font-size: 0.9em;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--primary-color); /* Цвет как у ссылок */
     cursor: pointer;
-    font-size: 0.9rem;
+    transition: color 0.25s;
+    align-self: center; /* Центрируем кнопку */
 }
 
 .toggleButton:hover {
-    text-decoration: underline;
+    color: var(--scrollbar-thumb-hover);
 }
 
 /* Скрывает элементы визуально, но оставляет их для скринридеров */

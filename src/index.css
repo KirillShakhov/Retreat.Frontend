@@ -53,6 +53,8 @@ button:focus-visible {
 }
 
 input {
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid var(--scrollbar-track);
   background-color: var(--button-bg);
   padding: 0.8em 1em;

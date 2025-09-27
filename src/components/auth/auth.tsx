@@ -1,5 +1,5 @@
 import { FC, useState, FormEvent } from "react";
-import styles from './Auth.module.css'; // Импортируем CSS-модуль
+import styles from './Auth.module.css'; // Импортируем обновленный CSS-модуль
 
 interface Credentials {
     email: string;
@@ -28,19 +28,15 @@ const Auth: FC<AuthProps> = ({ onLogin, onRegister }) => {
 
         try {
             await action(credentials);
-
-            // После регистрации автоматически переключаем на форму входа
             if (!isLoginView) {
                 setIsLoginView(true);
             }
-
-            // Очистка полей и управление состоянием после успеха
-            // теперь полностью делегированы родительскому компоненту
             setEmail('');
             setPassword('');
-
         } catch (err: any) {
-            setError(err.message || 'Что-то пошло не так');
+            // Пытаемся извлечь сообщение об ошибке от axios
+            const errorMessage = err.response?.data?.message || err.message || 'Что-то пошло не так';
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }
@@ -54,45 +50,47 @@ const Auth: FC<AuthProps> = ({ onLogin, onRegister }) => {
     };
 
     return (
-        <div className={styles.container}>
-            <h1>{isLoginView ? 'Вход' : 'Регистрация'}</h1>
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <h1>{isLoginView ? 'Вход' : 'Регистрация'}</h1>
 
-            <form onSubmit={handleFormSubmit} className={styles.form}>
-                <div>
-                    <label htmlFor="email" className={styles.visuallyHidden}>Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className={styles.input}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password" className={styles.visuallyHidden}>Пароль</label>
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder="Пароль"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className={styles.input}
-                    />
-                </div>
+                <form onSubmit={handleFormSubmit} className={styles.form}>
+                    <div>
+                        <label htmlFor="email" className={styles.visuallyHidden}>Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            // Класс больше не нужен, стили применяются глобально
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password" className={styles.visuallyHidden}>Пароль</label>
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="Пароль"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            // Класс больше не нужен
+                        />
+                    </div>
 
-                {error && <p className={styles.errorMessage}>{error}</p>}
+                    {error && <p className={styles.errorMessage}>{error}</p>}
 
-                <button type="submit" disabled={isLoading} className={styles.submitButton}>
-                    {isLoading ? 'Загрузка...' : (isLoginView ? 'Войти' : 'Зарегистрироваться')}
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? 'Загрузка...' : (isLoginView ? 'Войти' : 'Зарегистрироваться')}
+                    </button>
+                </form>
+
+                <button type="button" onClick={toggleView} className={styles.toggleButton}>
+                    {isLoginView ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти'}
                 </button>
-            </form>
-
-            <button type="button" onClick={toggleView} className={styles.toggleButton}>
-                {isLoginView ? 'Нет аккаунта? Зарегистрироваться' : 'Уже есть аккаунт? Войти'}
-            </button>
+            </div>
         </div>
     );
 };
