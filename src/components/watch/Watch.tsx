@@ -2,7 +2,7 @@ import {FC, useEffect, useMemo, useState, useRef} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import ReactPlayer from "react-player";
 import {IconPack} from "../../icons";
-import IconButton from "../../ui/icon-button";
+import IconButton from "../../ui/icon-button"; // Предполагается, что IconButton находится в ../../ui
 import styles from './Watch.module.css';
 
 // Интерфейс для эпизода
@@ -88,6 +88,7 @@ const Watch: FC = () => {
 
 	const handleProgress = (progress: { playedSeconds: number }) => {
 		const secondsRemaining = duration - progress.playedSeconds;
+		// Показываем окно за 30 секунд до конца, если оно еще не показано
 		if (duration > 0 && secondsRemaining <= 30 && !isNextUpVisible && nextEpisode) {
 			setIsNextUpVisible(true);
 		}
@@ -122,14 +123,20 @@ const Watch: FC = () => {
 				{series.length > 1 && <IconButton
 					Icon={IconPack.List}
 					fill={'#fff'}
+					stroke={'none'}
 					onClick={() => setIsListVisible(!isListVisible)}
-					style={{backgroundColor: "rgba(255,255,255,0.1)", width: 40, height: 40, padding: 5}}
+					// Изменено: теперь используется className для IconButton
+					className={styles.iconButton}
+					style={{width: 40, height: 40, padding: 5}} // Оставляем, если IconButton не имеет своих размеров по умолчанию
 				/>}
 				<IconButton
 					Icon={IconPack.Cross}
 					fill={'#fff'}
+					stroke={'none'}
 					onClick={close}
-					style={{backgroundColor: "rgba(255,255,255,0.1)", width: 40, height: 40, padding: 5}}
+					// Изменено: теперь используется className для IconButton
+					className={styles.iconButton}
+					style={{width: 40, height: 40, padding: 5}} // Оставляем
 				/>
 			</div>
 
@@ -154,6 +161,8 @@ const Watch: FC = () => {
 						Icon={IconPack.Cross}
 						fill={'#fff'}
 						onClick={() => setIsNextUpVisible(false)}
+						// Изменено: теперь используется className для IconButton
+						className={styles.iconButton}
 						style={{
 							position: 'absolute',
 							top: 8,
@@ -161,7 +170,7 @@ const Watch: FC = () => {
 							width: 28,
 							height: 28,
 							padding: 4,
-							backgroundColor: 'rgba(255, 255, 255, 0.1)'
+							// backgroundColor: 'rgba(255, 255, 255, 0.1)' // Удалено, теперь в CSS-модуле
 						}}
 					/>
 					<p>Далее</p>

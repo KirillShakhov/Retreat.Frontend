@@ -1,4 +1,4 @@
-/* Watch.module.css */
+/* Watch.module.css - Liquid Glass / Glassmorphism Style */
 
 .playerWrapper {
     position: absolute;
@@ -6,17 +6,35 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: black;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); /* Градиентный темный фон */
+    display: flex; /* Для центрирования плеера, если нужно */
+    justify-content: center;
+    align-items: center;
 }
 
 /* Контейнер для кнопок управления справа вверху */
 .controlsContainer {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     display: flex;
     gap: 10px;
     z-index: 20;
+}
+
+/* Переопределение стилей для IconButton в стиле стекла */
+.controlsContainer .iconButton { /* Добавлен класс .iconButton в IconButton */
+    background-color: rgba(255, 255, 255, 0.15); /* Полупрозрачный фон */
+    backdrop-filter: blur(8px); /* Эффект размытия */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Тонкая светлая граница */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Мягкая тень */
+    transition: all 0.2s ease-in-out;
+}
+
+.controlsContainer .iconButton:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Панель со списком серий */
@@ -25,16 +43,17 @@
     top: 0;
     right: 0;
     width: 100%;
-    max-width: 350px;
+    max-width: 380px; /* Немного шире для лучшего вида */
     height: 100%;
-    background-color: rgba(18, 18, 18, 0.95);
-    backdrop-filter: blur(10px);
+    background-color: rgba(30, 30, 30, 0.8); /* Более темный, но прозрачный фон */
+    backdrop-filter: blur(20px); /* Сильное размытие */
+    border-left: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая граница слева */
     color: white;
     display: flex;
     flex-direction: column;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: -8px 0 20px rgba(0, 0, 0, 0.4);
     transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Более плавная анимация */
     z-index: 10;
 }
 
@@ -43,9 +62,12 @@
 }
 
 .episodesPanel h3 {
-    padding: 20px;
+    padding: 20px 25px;
     margin: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.3rem; /* Чуть крупнее заголовок */
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Список серий */
@@ -55,49 +77,76 @@
     margin: 0;
     overflow-y: auto;
     flex-grow: 1;
+    /* Улучшенный скроллбар для светлых тем */
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    scrollbar-width: thin;
 }
+
+.episodesList::-webkit-scrollbar {
+    width: 8px;
+}
+
+.episodesList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.episodesList::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    border: 2px solid transparent;
+}
+
+.episodesList::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
 
 /* Элемент списка (серия) */
 .episodeItem {
-    padding: 15px 20px;
+    padding: 15px 25px;
     cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: background-color 0.2s;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Очень тонкая граница */
+    transition: background-color 0.2s, color 0.2s;
     font-size: 0.95rem;
-    white-space: nowrap;      /* Запрещаем перенос текста на новую строку */
-    overflow: hidden;         /* Скрываем всё, что не помещается */
-    text-overflow: ellipsis;  /* Добавляем многоточие в конце */
+    color: rgba(255, 255, 255, 0.7); /* Чуть приглушенный цвет текста */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .episodeItem:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.08); /* Светлее при наведении */
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* Активная (текущая) серия */
 .episodeItem.active {
-    background-color: var(--primary-color, #646cff);
+    background: linear-gradient(90deg, var(--primary-color-dark, #5058c0) 0%, var(--primary-color, #646cff) 100%); /* Градиент */
     color: white;
     font-weight: bold;
+    box-shadow: inset 3px 0 0 0 var(--primary-color, #646cff); /* Вертикальная полоса слева */
 }
 
+
+/* Окно "Далее" в правом нижнем углу */
 .nextUpContainer {
     position: absolute;
-    bottom: 90px;
-    right: 20px;
+    bottom: 100px; /* Чуть выше */
+    right: 25px; /* Чуть правее */
     width: 100%;
-    max-width: 320px;
-    background-color: rgba(18, 18, 18, 0.9);
-    backdrop-filter: blur(10px);
+    max-width: 350px; /* Чуть шире */
+    background-color: rgba(30, 30, 30, 0.85); /* Полупрозрачный темный фон */
+    backdrop-filter: blur(15px); /* Размытие */
     color: white;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+    border-radius: 12px; /* Более округлые углы */
+    padding: 20px; /* Чуть больше паддинга */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); /* Более мягкая и заметная тень */
     z-index: 20;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая светлая граница */
 
-    /* Анимация появления */
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transform: translateY(30px); /* Большая анимация */
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 
 .nextUpContainer.visible {
@@ -106,17 +155,18 @@
 }
 
 .nextUpContainer p {
-    margin: 0 0 5px 0;
-    font-size: 0.8rem;
+    margin: 0 0 8px 0;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.6); /* Приглушенный текст */
+    letter-spacing: 0.5px;
 }
 
 .nextUpContainer h4 {
-    margin: 0 0 15px 0;
-    font-size: 1rem;
-    font-weight: bold;
-    /* Обрезаем длинные названия */
+    margin: 0 0 20px 0;
+    font-size: 1.15rem; /* Чуть крупнее заголовок */
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -124,17 +174,34 @@
 
 .nextUpButton {
     width: 100%;
-    padding: 10px;
-    font-size: 0.9rem;
+    padding: 12px; /* Чуть больше паддинга */
+    font-size: 1rem;
     font-weight: bold;
     color: white;
-    background-color: var(--primary-color, #646cff);
+    background: linear-gradient(90deg, var(--primary-color-dark, #5058c0) 0%, var(--primary-color, #646cff) 100%); /* Градиент */
     border: none;
-    border-radius: 6px;
+    border-radius: 8px; /* Более округлые углы */
     cursor: pointer;
-    transition: background-color 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
 }
 
 .nextUpButton:hover {
-    background-color: var(--scrollbar-thumb-hover, #7b83ff);
+    transform: translateY(-2px); /* Легкий эффект поднятия */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Кнопка закрытия в NextUpContainer */
+.nextUpContainer .iconButton { /* Добавлен класс .iconButton в IconButton */
+    background-color: rgba(255, 255, 255, 0.1); /* Прозрачнее */
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+.nextUpContainer .iconButton:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
