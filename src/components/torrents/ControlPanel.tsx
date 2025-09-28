@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
-import { IconPack } from "../../../icons";
-import IconButton from "../../../ui/icon-button";
+import { IconPack } from "../../icons";
+import IconButton from "../../ui/icon-button";
 import { toast } from "react-toastify";
 
 interface ControlPanelProps {

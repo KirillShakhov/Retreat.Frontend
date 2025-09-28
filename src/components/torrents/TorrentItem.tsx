@@ -1,13 +1,13 @@
 import {FC} from "react";
 import 'react-toastify/dist/ReactToastify.css';
-import {deleteTorrent, FileInfo, getStreamUrl, TorrentInfo} from "../../../services/torrentService.ts";
-import {usePalette} from "../../../utils/themes/usePalette.ts";
-import ProgressBar from "../../../ui/progress-bar";
-import IconButton from "../../../ui/icon-button";
-import {IconPack} from "../../../icons";
+import {deleteTorrent, FileInfo, getStreamUrl, TorrentInfo} from "../../services/torrentService.ts";
+import {usePalette} from "../../utils/themes/usePalette.ts";
+import ProgressBar from "../../ui/progress-bar";
+import IconButton from "../../ui/icon-button";
+import {IconPack} from "../../icons";
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
-import {Episode} from "../../watch/Watch.tsx";
+import {Episode} from "../watch/Watch.tsx";
 
 interface TorrentItemProps {
     item: TorrentInfo;
@@ -115,7 +115,7 @@ const TorrentItem: FC<TorrentItemProps> = ({item}) => {
                         {/* Имя файла и прогресс-бар */}
                         <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
                             <span style={{wordWrap: 'break-word', wordBreak: 'break-all'}}>{file.name}</span>
-                            <ProgressBar progress={file.progress * 100}/> {/* Прогресс обычно от 0 до 1, умножаем на 100 */}
+                            <ProgressBar progress={file.progress}/>
                         </div>
 
                         {/* Кнопки действий для файла */}
